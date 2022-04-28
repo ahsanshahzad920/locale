@@ -16,8 +16,8 @@ class FeedbackController extends Controller
     public function index()
     {
         //
-        $data['data'] = TeamLeads::where('role_id','4')->get();
-        return view('admin.adminPanel.teamleads.view',$data);
+        $data['data'] = Feedback::where('role_id','4')->get();
+        return view('admin.adminPanel.Feedback.view',$data);
     }
 
     /**
@@ -39,40 +39,50 @@ class FeedbackController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
-        $users=Auth::id();
-        $validator = Validator::make($request->all(),
-                [
-                    'name' => 'required',
-                    'password' => ['required', 'string', 'min:8', 'confirmed'],
-                    'email'      => 'required|email|unique:users',
-                ]
-            );
-            if ($validator->fails())
-            {
-                return response()->json(['errors' => $validator->errors()->all()]);
-            }    
-        TeamLeads::insert(
+        $validation = $request->validate(
             [
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
-                'role_id'=>'4',
-                'email_verified_at'=>now(),
-                'status'  => 1,
-                'created_by' => $users,
-                'updated_by' => $users,
+                'option0' => 'required'
             ]
         );
-
-        return redirect("admin/teamlead/index")
-        ->with("success",'Team Lead is created, default password is acelocale123');
+        $size = count(collect($request)->get('question'));
+        // dd($size-1);
+        if($size<10){
+        $data = $request->all();
+        // for($i=0; $i<=$size-1; $i++){
+            
+        //     $feedback = new Feedback;
+        //     $feedback->question = $request->question[$i];
+        //     $feedback->option = json_encode($data['option'.$i]);
+        //     $feedback->client_id = Auth()->user()->id;
+        //     $feedback->save();
+        // }
+    }else{
+        return back()->with('error','Questions are greater then 10!');
     }
-
+    return view('admin.adminPanel.feedbacks.client_feedback',compact('data'));
+        
+    }
+    public function client_feedback(Request $request)
+    {
+        $size = count(collect($request)->get('question'));
+        $data = $request->all();
+        for($i=0; $i<=$size-1; $i++){
+            
+            $feedback = new Feedback;
+            $feedback->question = $request->question[$i];
+            $feedback->option = $data['option1'.$i]??'';
+            $feedback->option1 = $data['option2'.$i]??'';
+            $feedback->option2 = $data['option3'.$i]??'';
+            $feedback->option3 = $data['option4'.$i]??'';
+            $feedback->client_id = Auth()->user()->id;
+            $feedback->save();
+        }
+        return redirect('admin/feedback/create')->with('success','Feedback add for client!');
+    }
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\TeamLeads  $teamLeads
+     * @param  \App\Models\Feedback  $teamLeads
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -83,13 +93,13 @@ class FeedbackController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\TeamLeads  $teamLeads
+     * @param  \App\Models\Feedback  $teamLeads
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         
-        $user = TeamLeads::where('id',$id)->first();
+        $user = Feedback::where('id',$id)->first();
         
         return view("admin.adminPanel.teamleads.edit",compact('user'));
     }
@@ -98,7 +108,7 @@ class FeedbackController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\TeamLeads  $teamLeads
+     * @param  \App\Models\Feedback  $teamLeads
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -110,7 +120,7 @@ class FeedbackController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
      
-        TeamLeads::where('id', $id)->update(
+        Feedback::where('id', $id)->update(
             [
                 'name' => $request->name,
                 'email' => $request->email,
@@ -124,14 +134,14 @@ class FeedbackController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\TeamLeads  $teamLeads
+     * @param  \App\Models\Feedback  $teamLeads
      * @return \Illuminate\Http\Response
      */
    
     public function delete(Request $request)
     {
         //dd($request->all());
-        $user = TeamLeads::find($request->id);
+        $user = Feedback::find($request->id);
         $user->delete();
         return response(['message' => 'SubAdmin delete successfully']);
 

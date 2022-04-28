@@ -102,6 +102,7 @@ Route::prefix("feedback")->group(function(){
     Route::post("update/{id}",[\App\Http\Controllers\FeedbackController::class,'update']);
     Route::post("delete/{id}",[\App\Http\Controllers\FeedbackController::class,'delete']);
     });
+Route::post('client_feedback',[\App\Http\Controllers\FeedbackController::class,'client_feedback']);
 
 Route::get('project/offer-chat/{id}/{invoice}',[\App\Http\Controllers\ProjectController::class, 'messages_offer_chat_admin']);
 
