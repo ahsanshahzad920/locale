@@ -75,9 +75,9 @@
                                             <div class="col-12 ">
                                                 <b>Option 1</b>
                                                 <div class="form-group">
-                                                    <input type="radio" name="option1{{$index}}" value="0" id="">
+                                                    <input type="radio" name="option1{{$index}}" value="Yes" id="">
                                                     <label for="">Yes</label>
-                                                    <input type="radio" name="option1{{$index}}" value="1" id="">
+                                                    <input type="radio" name="option1{{$index}}" value="No" id="">
                                                     <label for="">No</label>
                                                 </div>
                                             </div>
@@ -113,9 +113,9 @@
                                             <div class="col-12 ">
                                                 <b>Option 3</b>
                                                 <div class="form-group">
-                                                    <input type="radio" name="option3{{$index}}" value="0" id="">
-                                                    <label for="">Yes</label>
-                                                    <input type="radio" name="option3{{$index}}" value="1" id="">
+                                                    <input type="radio" name="option3{{$index}}" value="Satisfy Yes" id="">
+                                                    <label for="">Satisfy Yes</label>
+                                                    <input type="radio" name="option3{{$index}}" value="Not" id="">
                                                     <label for="">Not</label>
                                                 </div>
                                             </div>
@@ -132,6 +132,21 @@
                                             @endif
                                             @endforeach
                                         </div>
+                                        <div class="col-4 ">
+                                                <div class="form-group">
+                                                    <lable>Select Client</label>
+                                                    <select class="form-control" name="client_id[]"
+                                                        data-placeholder="Select a Client" id="exampleFormControlSelect1">
+                                                       @if(!$client->isEmpty())
+                                                        @foreach($client as $c)
+                                                        <option value="{{$c->id}}">{{$c->name}}</option>
+                                                        @endforeach
+                                                       @endif 
+
+                                                    </select>
+                                                    {!! $errors->first('option0', "<span class='text-danger'>:message</span>") !!}
+                                                </div>
+                                            </div>
                                         <!--  -->
                                     </div>
                                     <!-- /.card-body -->

@@ -71,7 +71,7 @@
                                             </div>
                                             <div class="col-4 ">
                                                 <div class="form-group">
-                                                    <select class="form-control" name="option0[]" multiple="multiple"
+                                                    <select class="form-control select2" name="option0[]" multiple="multiple"
                                                         data-placeholder="Select a Option" id="exampleFormControlSelect1">
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
@@ -98,7 +98,7 @@
                                     </div>
                                     <!-- /.card-body -->
                                     <div class="card-footer">
-                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                        <button type="submit" class="btn btn-primary">Next</button>
                                     </div>
                                 </form>
                             </div>
@@ -120,9 +120,9 @@
             $(".add").on("click", function() {
                 const count = document.querySelectorAll('#option').length;
                 $(".new").append(
-                    "<div class='row'><div class='col-7'><div class = 'form-group'><input type = 'text' name = 'question[]' class = 'form-control' id = ' aria-describedby=' placeholder = 'Enter Question'></div> </div> <div class = 'col-4 ' ><div class = 'form-group'><select class = 'form-control' name = 'option" +
+                    "<div class='row'><div class='col-7'><div class = 'form-group'><input type = 'text' name = 'question[]' class = 'form-control' id = ' aria-describedby=' placeholder = 'Enter Question'></div> </div> <div class = 'col-4 ' ><div class = 'form-group'><select class = 'form-control select2' name = 'option" +
                     (count + 1) +
-                    "[]' id='option' multiple = 'multiple' placeholder = 'Select a Option'> <option value = '1' > 1 </option> <option value = '2' > 2 </option> <option value = '3' > 3 </option> <option value = '4' > 4 </option> </select> </div> </div></div>"
+                    "[]' id='option' multiple = 'multiple' data-placeholder = 'Select a Option'> <option value = '1' > 1 </option> <option value = '2' > 2 </option> <option value = '3' > 3 </option> <option value = '4' > 4 </option> </select> </div> </div></div>"
                 );
             });
             $(".delete").on("click", function() {

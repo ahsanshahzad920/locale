@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Feedback;
+use App\Models\TeamLeads;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -48,6 +49,7 @@ class FeedbackController extends Controller
         // dd($size-1);
         if($size<10){
         $data = $request->all();
+        $client=TeamLeads::where('role_id','3')->get();
         // for($i=0; $i<=$size-1; $i++){
             
         //     $feedback = new Feedback;
@@ -59,13 +61,15 @@ class FeedbackController extends Controller
     }else{
         return back()->with('error','Questions are greater then 10!');
     }
-    return view('admin.adminPanel.feedbacks.client_feedback',compact('data'));
+    return view('admin.adminPanel.feedbacks.client_feedback',compact('data','client'));
         
     }
     public function client_feedback(Request $request)
     {
+        
         $size = count(collect($request)->get('question'));
         $data = $request->all();
+       
         for($i=0; $i<=$size-1; $i++){
             
             $feedback = new Feedback;
@@ -74,7 +78,7 @@ class FeedbackController extends Controller
             $feedback->option1 = $data['option2'.$i]??'';
             $feedback->option2 = $data['option3'.$i]??'';
             $feedback->option3 = $data['option4'.$i]??'';
-            $feedback->client_id = Auth()->user()->id;
+            $feedback->client_id =json_encode($data['client_id']);
             $feedback->save();
         }
         return redirect('admin/feedback/create')->with('success','Feedback add for client!');
